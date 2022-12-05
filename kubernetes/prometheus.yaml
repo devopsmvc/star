@@ -1,0 +1,20 @@
+apiVersion: apps/v1  
+kind: Deployment  
+metadata:  
+  name: promotheus 
+  labels:  
+    app: promotheus  
+  replicas: 4  
+  selector:  
+    matchLabels:  
+      app: promotheus  
+  template:  
+    metadata:  
+      labels:  
+        app: promotheus  
+    spec:  
+      containers:  
+      - name: promotheus  
+        image: devopsmvc/addressbook:1.0  
+        ports:  
+        - containerPort: 8080
