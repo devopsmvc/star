@@ -1,0 +1,14 @@
+---
+- hosts: webservers
+  become: true
+  tasks:
+  - name: start docker
+    service:
+      name: docker
+      state: started
+      enabled: true
+  - name: start git
+    service:
+      name: git
+      state: started
+      enabled: true
