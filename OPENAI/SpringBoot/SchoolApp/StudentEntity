@@ -1,0 +1,17 @@
+@Entity
+public class Student {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
+  private String firstName;
+  private String lastName;
+  private Date dateOfBirth;
+  private String address;
+  private String phoneNumber;
+  private String studentNumber;
+  private Date enrollmentDate;
+
+  // Getters and setters
+}

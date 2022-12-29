@@ -1,0 +1,48 @@
+pipeline {
+    agent any
+
+    // Declare variables
+    environment {
+        REPOSITORY_URL = 'https://github.com/myuser/myapp.git'
+        DOCKER_HUB_USERNAME = credentials('dockerhub_username')
+        DOCKER_HUB_PASSWORD = credentials('dockerhub_password')
+        KUBECONFIG = credentials('kubeconfig')
+        KUBE_CONTEXT = 'kubernetes-prod'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: "${REPOSITORY_URL}"]]])
+            }
+        }
+        stage('Build') {
+            steps {
+                sh './mvnw clean package'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t myapp:latest .'
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                sh "docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD"
+                sh 'docker push myapp:latest'
+            }
+        }
+        stage('Deploy to Kubernetes') {
+            steps {
+                withEnv(["KUBECONFIG=${KUBECONFIG}"]) {
+                    sh "kubectl --context ${KUBE_CONTEXT} apply -f deployment.yml"
+                }
+            }
+        }
+        stage('Selenium Tests') {
+            steps {
+                sh './run-selenium-tests.sh'
+            }
+        }
+    }
+}
