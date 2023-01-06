@@ -1,0 +1,15 @@
+# Read more about SSH config files: https://linux.die.net/man/5/ssh_config
+
+# Host 13.232.164.169
+#   HostName 13.232.164.169
+#   IdentityFile "C:\Users\mahes\Desktop\STAR\devops.pem"
+#   User ubuntu
+
+Host 43.204.28.145
+  HostName 43.204.28.145
+  User ubuntu
+
+Host 43.204.28.145
+  HostName 43.204.28.145
+  IdentityFile "C:\Users\mahes\Desktop\STAR\devops.key"
+  User ubuntu
